@@ -77,31 +77,43 @@ bool copiarLista(int from[], int to[], int tipo) {
     return false;
 }
 
+void inverter(int vetor[], int result[], int size) { //inverter L1 - > L2
+    for (int i = size - 1; i >= 0; i--) {
+        adicionar(vetor[i], result, size);
+
+    }
+}
+
+void inverterL(int vetor[], int size) { //Inverter L1
+    int aux[size];
+    int j = size - 1;
+    for (int i = 0; i < size; i++) {
+        aux[j] = vetor[i];
+        j--;
+    }
+
+    for (int i = 0; i < size; i++) {
+        L[i] = aux[i];
+    }
+
+}
+
+void vetorOrdenado(int n, int size) {
+    int vetor[size];
+}
+
 int main(int argc, char** argv) {
-    adicionar(12, L, size);
-    adicionar(12, L, size);
-    adicionar(13, L, size);
-    adicionar(12, L, size);
-    adicionar(13, L, size);
+    adicionar(1, L, size);
+    adicionar(2, L, size);
+    adicionar(3, L, size);
+    adicionar(4, L, size);
+    adicionar(5, L, size);
 
 
-
-    //adicionar(10, L2, size);
-    //    printf("stts> %d\n", adicionarSR(L[0], L2, size));
-    //    printf("stts> %d\n", adicionarSR(L[1], L2, size));
-    //    printf("stts> %d\n", adicionarSR(L[2], L2, size));
-    //    printf("stts> %d\n", adicionarSR(L[3], L2, size));
-    //    printf("stts> %d\n", adicionarSR(L[4], L2, size));
-
-    //    adicionar(10, L2, size);
-
-    //printf("Contains: %d\n", contains(10, L2, size));
-
-    printf("stts> %d\n", copiarLista(L, L2, 2));
-    
-
-    exibir(L, size);
-    exibir(L2, size);
+    //inverter(L, L2, size);
+    //    inverterL(L, size);
+    //    exibir(L, size);
+    //exibir(L2, size);
 
 
     return 0;
