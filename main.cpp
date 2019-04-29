@@ -25,6 +25,7 @@ int L[5];
 int L2[5];
 int L3[10];
 int size = 5;
+int lastIndex = 0;
 
 /**
  * Adiciona o valor passado na primeira possição que for encontrado "0"
@@ -35,10 +36,15 @@ int size = 5;
  */
 bool adicionar(int value, int vetor[], int size) {
     for (int i = 0; i < size; i++) {
-        if (vetor[i] == 0) {
-            vetor[i] = value;
-            return true;
+        if (vetor[0] == 0) {
+            vetor[lastIndex] = value;
+            i = size;
+        }else{
+            vetor[lastIndex] = value;
+            i = size;
         }
+
+        lastIndex++;
     }
     return false;
 }
@@ -54,6 +60,33 @@ bool adicionar(int value, int vetor[], int size) {
 bool adicionarIndex(int value, int index, int vetor[], int size) {
     vetor[index] = value;
     return true;
+}
+
+bool verificaCrescente(int vetor[], int size) {
+    for (int i = 0; i < size - 1; i++) {
+        if ((vetor[i + 1] - vetor[i]) <= 0) {
+            return false;
+        }
+
+    }
+
+    return true;
+}
+
+bool verificaDecrescente(int vetor[], int size) {
+    for (int i = 0; i < size - 1; i++) {
+        if ((vetor[i + 1] - vetor[i]) >= 0) {
+            return false;
+        }
+    }
+    return true;
+}
+
+bool verificaOrdenada(int vetor[], int size) {
+    if (verificaCrescente(vetor, size) == true || verificaDecrescente(vetor, size) == true) {
+        return true;
+    }
+    return false;
 }
 
 /**
@@ -286,13 +319,47 @@ bool excluir(int value, int vetor[], int size) {
     return false;
 }
 
-int main(int argc, char** argv) {
-    adicionar(10, L, size);
-    adicionar(10, L, size);
-    adicionar(10, L, size);
-    adicionar(13, L, size);
-    adicionar(14, L, size);
+int L4[100];
 
+int main(int argc, char** argv) {
+    adicionar(1, L, size);
+    adicionar(20, L, size);
+    adicionar(3, L, size);
+    adicionar(4, L, size);
+    adicionar(5, L, size);
+    //    adicionar(5, L, size);
+    //    adicionarIndex(1, 0, L, 5);
+    //    adicionarIndex(10, 1, L, 5);
+    //    adicionarIndex(20, 2, L, 5);
+    //    adicionarIndex(30, 3, L, 5);
+    //    adicionarIndex(40, 4, L, 5);
+
+    exibir(L, 5);
+
+    int i, n;
+    time_t t;
+
+    n = 100;
+
+    /*  random number generator */
+    srand((unsigned) time_t(&t));
+
+    /* Print 5 random numbers from 0 to 49 */
+    printf("RANDOM:\n");
+    for (i = 0; i < n; i++) {
+        int value = rand() % 50;
+        //        printf("%d\n", value);
+
+        vetorOrdenado(value, L4, 100);
+    }
+
+    printf("----------------------\n");
+    printf("ORDENADO:\n");
+    //exibir(L4, 100);
+
+    printf("Crescente: %d\n", verificaCrescente(L, 5));
+    printf("Decrescente: %d\n", verificaDecrescente(L, 5));
+    printf("Verificar Ordenada: %d\n", verificaOrdenada(L, 5));
     //    adicionar(-8, L2, size);
     //    adicionar(2, L2, size);
     //    adicionar(3, L2, size);
