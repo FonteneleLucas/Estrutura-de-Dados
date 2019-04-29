@@ -57,19 +57,19 @@ bool adicionarIndex(int value, int index, int vetor[], int size) {
 }
 
 /**
- * retorna o TRUE ou FALSE caso item buscado exista na lista passada
+ * retorna o índice do item buscado exista na lista passada
  * @param value
  * @param vetor
  * @param size
  * @return 
  */
-bool contains(int value, int vetor[], int size) {
+int contains(int value, int vetor[], int size) {
     for (int i = 0; i < size; i++) {
         if (vetor[i] == value) {
-            return true;
+            return i;
         }
     }
-    return false;
+    return -1;
 }
 
 /**
@@ -81,7 +81,7 @@ bool contains(int value, int vetor[], int size) {
  */
 bool adicionarSR(int value, int vetor[], int size) {
     for (int i = 0; i < size; i++) {
-        if (!contains(value, vetor, size)) {
+        if (contains(value, vetor, size) == -1) {
             adicionar(value, vetor, size);
             return true;
         }
@@ -131,7 +131,6 @@ bool copiarLista(int from[], int to[], int tipo) {
 void inverter(int vetor[], int result[], int size) { //inverter L1 - > L2
     for (int i = size - 1; i >= 0; i--) {
         adicionar(vetor[i], result, size);
-
     }
 }
 
@@ -173,36 +172,47 @@ int greatIndex(int value, int vetor[], int size) {
  * @param vetor
  * @param size
  */
-void upIndex(int key, int vetor[], int size) {
+bool upIndex(int key, int vetor[], int size) {
     if (vetor[size - 1] == 0) {
         //printf("Tem espaço\n");
         for (int i = size - 1; i > key; i--) {
             vetor[i] = vetor[i - 1];
         }
-        //        vOrdenado[key] = -50;
-    } else {
-        //printf("Nao tem espaço\n");
+        return true;
     }
+    return false;
 
 }
 
+bool downIndex(int key, int vetor[], int size) {
+    int cont = 0;
+    for (int i = key; i < size - 1; i++) {
+        //vetor[i] = vetor[i + 1];
+        adicionarIndex(vetor[i + 1], i, L, 5);
+        adicionar(0, vetor, 5);
+        //        cont = i;
+    }
+    //    adicionarIndex(vetor[cont], 0, L, 5);
+    return true;
 
 
-int lastAdd = 0;
+}
 
 /**
  * Insere vetor passado com parâmetro com ordenação crescente
  * @param n
  * @param vetor
  * @param size
+ * @return boolean
  */
-void vetorOrdenado(int n, int vetor[], int size) {
+int lastAdd = 0;
+
+bool vetorOrdenado(int n, int vetor[], int size) {
     if (vetor[size - 1] == 0) {
 
         int index = greatIndex(n, vetor, size);
         if (index == -1) {
             adicionarIndex(n, lastAdd, vetor, size);
-            //            printf("add normal\n");
             lastAdd += 1;
         }
 
@@ -212,11 +222,11 @@ void vetorOrdenado(int n, int vetor[], int size) {
             vetor[index] = n;
             lastAdd += 1;
         }
+        return true;
     } else {
-        printf("Não Pode add\n");
+        return false;
     }
 }
-
 
 /**
  * Gera lista ordenada a partir de duas listas passadas
@@ -226,88 +236,81 @@ void vetorOrdenado(int n, int vetor[], int size) {
  * @param size2
  * @param resultVetor
  * @param resultSize
+ * @return boolean
  */
-void intercalarL1L2(int vetor1[], int size1, int vetor2[], int size2, int resultVetor[], int resultSize) {
-    int aux[resultSize];
+bool intercalarL1L2(int vetor1[], int size1, int vetor2[], int size2, int resultVetor[], int resultSize) {
+    if (size1 + size2 == resultSize) {
+        int aux[resultSize];
+        int cont = 0;
+        for (int i = 0; i < size1; i++) {
+            aux[i] = vetor1[i];
+            cont = i;
+        }
+
+        for (int i = 0; i < size2; i++) {
+            aux[++cont] = vetor2[i];
+        }
+
+        for (int i = 0; i < 10; i++) {
+            vetorOrdenado(aux[i], resultVetor, resultSize);
+        }
+        return true;
+    }
+    return false;
+
+}
+
+/**
+ * Exclui todas ocorrências do valor passado na lista
+ * @param value
+ * @param vetor
+ * @param size
+ * @return 
+ */
+bool excluir(int value, int vetor[], int size) {
     int cont = 0;
-    for (int i = 0; i < size1; i++) {
-        aux[i] = vetor1[i];
-        cont = i;
-    }
+    if (vetor[0] != 0) {
+        for (int i = 0; i < size; i++) {
+            if (value == vetor[i]) {
+                cont++;
+            }
+        }
 
-    for (int i = 0; i < size2; i++) {
-        aux[++cont] = vetor2[i];
+        for (int i = 1; i <= cont; i++) {
+            int index = contains(value, vetor, size);
+            downIndex(index, L, size);
+            adicionarIndex(0, size - 1, vetor, size);
+        }
+        return true;
     }
-
-    for (int i = 0; i < 10; i++) {
-        vetorOrdenado(aux[i], resultVetor, resultSize);
-    }
+    return false;
 }
 
 int main(int argc, char** argv) {
     adicionar(10, L, size);
-    adicionar(9, L, size);
-    adicionar(-50, L, size);
+    adicionar(10, L, size);
+    adicionar(10, L, size);
+    adicionar(13, L, size);
     adicionar(14, L, size);
-    adicionar(0, L, size);
 
-    adicionar(8, L2, size);
-    adicionar(2, L2, size);
-    adicionar(3, L2, size);
-    adicionar(1, L2, size);
-    adicionar(90, L2, size);
+    //    adicionar(-8, L2, size);
+    //    adicionar(2, L2, size);
+    //    adicionar(3, L2, size);
+    //    adicionar(1, L2, size);
+    //    adicionar(90, L2, size);
 
-    intercalarL1L2(L, 5, L2, 5, L3, 10);
+    //    printf("Stts: %d\n", excluir(10, L, 5));
+    //    printf("Stts: %d\n", excluir(7, L, 5));
+    //    printf("Stts: %d\n", excluir(4, L, 5));
+    //    printf("Stts: %d\n", excluir(9, L, 5));
 
-
-    exibir(L3, 10);
-    //inverter(L, L2, size);
-    //    inverterL(L, size);
-    //    exibir(L, size);
-    //exibir(L2, size);
-    //    vOrdenado[0] = 20;
-    //    vOrdenado[1] = 2;
-    //    vetorOrdenado(8, 6);
-    //    vetorOrdenado(-10, 10);
-    //    //    vetorOrdenado(1, 3);
-    //        vetorOrdenado(1, 10);
-    //        vetorOrdenado(2, 10);
-    //        vetorOrdenado(3, 10);
-    //        vetorOrdenado(0, 10);
-    //        vetorOrdenado(0, 10);
-    //        vetorOrdenado(0, 10);
-    //        vetorOrdenado(0, 10);
-    //    vetorOrdenado(8, 10);
-    //    //
-    //    vetorOrdenado(20, 10);
-    //    vetorOrdenado(8, 10);
-    //    vetorOrdenado(10, 3);
-    //    vetorOrdenado(4, 2);
-
-    //exibir(vOrdenado, 4);
-
-    //    int i, n;
-    //    time_t t;
-    //
-    //    n = 10;
-    //
-    //    /*  random number generator */
-    //    srand((unsigned) time_t(&t));
-    //
-    //    /* Print 5 random numbers from 0 to 49 */
-    //    printf("RANDOM:\n");
-    //    for (i = 0; i < n; i++) {
-    //        int value = rand() % 80;
-    //        printf("%d\n", value);
-    //
-    ////        vetorOrdenado(value, vOrdenado, 10);
-    //        vetorOrdenado(value, L3, 10);
-    //    }
-    //
-    //    printf("----------------------\n");
-    //    printf("ORDENADO:\n");
+    //    printf("value: %d\n", intercalarL1L2(L, 5, L2, 5, L3, 10));
     //    exibir(L3, 10);
-
+    //    exibir(L2,5);
+    //    exibir(L, 5);
+    //    inverter(L, L2, size);
+    //    inverterL(L, size);
+    //    exibir(vOrdenado, 4);
 
     return 0;
 }
